@@ -1,40 +1,106 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Flight Simulator</title>
-        <link rel = "stylesheet" type = "text/css" href = "styles.css" />
-        <script src = "scripts.js"></script>
-    </head>
-    <body>
-        <div style="text-align: center;">
-            <h1>Flight Simulator</h1>
-            <h2>Current Flight Status</h2>
-            <p id = "flightStatus">Space shuttle ready for takeoff</p>
-            <h2>Shuttle Trajectory</h2>
-        </div>
-        <div style="text-align: center; height: 400px; width: 100%;" >
-            <div style="text-align: center; display: inline-block;">
-                <h3>Fuel Levels</h3>
-                <p>Tank Full</p>
-                <h3>Astronaut Chat</h3>
-                <p>Houston, we are ready when you are!</p>
-            </div>
-            <div id = "shuttleBackground" style = "position: relative;">
-                <img src = "LaunchCode_rocketline_white.png" height = "75" width = "75" id = "rocket"/>
-            </div>
-            <div style = "text-align: center; display: inline-block;">
-                    <button>Up</button>
-                    <button>Down</button>
-                    <button>Right</button>
-                    <button>Left</button>
-                    <h3>Space Shuttle Height</h3>
-                    <p id="spaceShuttleHeight">0</p><p style = "display: inline-block;"> miles</p>
-            </div>
-        </div>
-        <div style="text-align: center;">
-            <button id = "takeoff">Take off</button>
-            <button id = "landing">Land</button>
-            <button id = "missionAbort">Abort Mission</button>
+  <head>
+    <title>Flight Simulator</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <script src="scripts.js"></script>
+  </head>
+  <body>
+    <div style="text-align: center">
+      <h1>Flight Simulator</h1>
+      <h2>Current Flight Status</h2>
+      <p id="flightStatus">Space shuttle ready for takeoff</p>
+      <h2>Shuttle Trajectory</h2>
     </div>
-    </body>
+    <div style="text-align: center; height: 400px; width: 100%">
+      <div style="text-align: center; display: inline-block">
+        <h3>Fuel Levels</h3>
+        <p>Tank Full</p>
+        <h3>Astronaut Chat</h3>
+        <p>Houston, we are ready when you are!</p>
+      </div>
+      <div id="shuttleBackground" style="position: relative">
+        <img
+          src="LaunchCode_rocketline_white.png"
+          height="75"
+          width="75"
+          id="rocket"
+        />
+      </div>
+      <div style="text-align: center; display: inline-block">
+        <button onclick="moveRocket('up')">Up</button>
+        <button onclick="moveRocket('down')">Down</button>
+        <button onclick="moveRocket('right')">Right</button>
+        <button onclick="moveRocket('left')">Left</button>
+        <h3>Space Shuttle Height</h3>
+        <p id="spaceShuttleHeight">0</p>
+        <p style="display: inline-block">miles</p>
+      </div>
+    </div>
+    <div style="text-align: center">
+      <button id="takeoff" onclick="takeOff()">Take off</button>
+      <button id="landing" onclick="landing()">Land</button>
+      <button id="missionAbort" onclick="abortMission()">Abort Mission</button>
+    </div>
+    <script>
+      const shuttleStatus = document.getElementById("flightStatus")
+      const colorBackground = document.getElementById("shuttleBackground")
+      const shuttleHeight = document.getElementById("spaceShuttleHeight")
+      const landingButton = document.getElementById("landing")
+      const rocketIcon = document.getElementById("rocket")
+
+      function takeOff() {
+        if (window.confirm("Confirm that the shuttle is ready for takeoff.")) {
+          shuttleStatus.innerHTML = "Shuttle in flight."
+          colorBackground.style.background = "blue"
+          shuttleHeight.innerHTML = Number(shuttleHeight.innerHTML) + 10000
+        }
+      }
+
+      const landing = () => {
+        alert("The shuttle is landing. Landing gear engaged.")
+        shuttleStatus.innerHTML = "The shuttle has landed"
+        colorBackground.style.background = "green"
+        shuttleHeight.innerHTML = 0
+      }
+
+      const abortMission = () => {
+        if (confirm("Confirm that you want to abort the mission")) {
+          shuttleStatus.innerHTML = "Mission aborted"
+          colorBackground.style.background = "green"
+          shuttleHeight.innerHTML = 0
+        }
+      }
+
+      let movementLeft = 0
+      let movementRight = 0
+      let movementUp = 0
+      let movementDown = 0
+      let shuttleHeightTotal = 0
+
+      const moveRocket = (direction) => {
+        if (direction === "up") {
+          shuttleHeightTotal += 10000
+          shuttleHeight.innerHTML = shuttleHeightTotal
+          movementUp -= 10
+          rocketIcon.style.marginTop = `${movementUp}px`
+        }
+        if (direction === "down") {
+          movementUp += 10
+          rocketIcon.style.marginTop = `${movementUp}px`
+          shuttleHeightTotal -= 10000
+          shuttleHeight.innerHTML = shuttleHeightTotal
+        }
+        if (direction === "left") {
+          movementLeft -= 10
+          rocketIcon.style.marginLeft = `${movementLeft}px`
+        }
+        if (direction === "right") {
+          rocketIcon.style.marginRight = "-10px"
+          movementRight -= 10
+          rocketIcon.style.marginRight = `${movementRight}px`
+        }
+      }
+    </script>
+  </body>
 </html>
